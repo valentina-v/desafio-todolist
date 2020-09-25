@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoList</title>
+
+
+</head>
+<style>
+    #app {
+        text-align: center;
+    }
+</style>
+<body>
+    <div id="app">
+        <h1>Crear nueva tarea</h1>
+        <div v-if="errorMessage">
+            {{errorMessage}}
+        </div>
+        <label for="tarea">Tarea</label>
+        <input 
+        type="text" 
+        id="tarea" 
+        v-model="newTask" 
+        placeholder="Ingresa nueva tarea">
+       
+        <button v-on:click="addTask">Crear</button>
+       
+        <h2>Listas</h2>
+       
+        <ul>
+          <li v-for="(task, index) in tasks"> {{task}} <button v-on:click="removeTask(task)">Eliminar</button></li> 
+        </ul>
+
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                tasks: [],
+                newTask: "",
+                errorMessage: "",
+        
+            },
+            methods: {
+                addTask(){
+                    
+                    let lowerTasks = this.tasks.map(task => task.toLowerCase().replace(" ","")
+                    );
+                    if ( !lowerTasks.includes(this.newTask.toLowerCase().replace(" ",""))) {
+                        this.tasks.push(this.newTask);
+                        this.errorMessage = ""
+                    } else {
+                        this.errorMessage = "La tarea ya existe, no se puede agregar"
+                    }
+                    this.newTask ="";
+                },
+                removeTask(index) {
+                   // const index = this.tasks.indexOf(task) 
+                    this.tasks.splice(index, 1)
+                    }
+                }
+                //Hacer comparacion entre las tareas entrantes y las existentes. Si existe, no se agrega o se omite y si no existe, se agrega
+            });
+    </script>
+</body>
+</html>
+
+
+
+<!--
+<div id='app'>
+    {{ message }}
+    <button v-on:click="changeMessage">
+       cambia tu Mensaje
+    </button>
+    
+    //"v-model" = listener
+    <input type="text" name="" id="" v-model="message">
+    {{count}}
+    <button v-on:click="count +=1 ">contador+1 </button>
+    <input type="text" name="" id="" :value="newRecipe">
+    {{recipes}}
+    <button v-on:click="addRecipe">Agrega una receta</button>
+</div>--
